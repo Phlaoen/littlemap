@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>中国省份交互式地图</title>
+	<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 20px;
+		}
+
+		h1 {
+			color: #fff;
+			font-size: 2.5rem;
+			margin-bottom: 20px;
+			text-shadow: 0 0 20px rgba(0, 188, 212, 0.5);
+		}
+
+		.subtitle {
+			color: rgba(255, 255, 255, 0.7);
+			font-size: 1.1rem;
+			margin-bottom: 30px;
+		}
+
+		.map-container {
+			width: 100%;
+			max-width: 1200px;
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 20px;
+			padding: 30px;
+			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		#chart {
+			width: 100%;
+			height: 600px;
+		}
+
+		.info-panel {
+			margin-top: 30px;
+			padding: 25px;
+			background: linear-gradient(135deg, rgba(0, 188, 212, 0.1), rgba(233, 30, 99, 0.1));
+			border-radius: 15px;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.info-panel h3 {
+			color: #00bcd4;
+			font-size: 1.3rem;
+			margin-bottom: 15px;
+		}
+
+		.info-panel p {
+			color: rgba(255, 255, 255, 0.8);
+			line-height: 1.8;
+			font-size: 0.95rem;
+		}
+
+		.legend {
+			display: flex;
+			justify-content: center;
+			gap: 30px;
+			margin-top: 20px;
+			flex-wrap: wrap;
+		}
+
+		.legend-item {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			color: #fff;
+			font-size: 0.9rem;
+		}
+
+		.legend-color {
+			width: 20px;
+			height: 20px;
+			border-radius: 4px;
+		}
+
+		.stats {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 20px;
+			margin-top: 30px;
+			width: 100%;
+			max-width: 1200px;
+		}
+
+		.stat-card {
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 15px;
+			padding: 20px;
+			text-align: center;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			transition: transform 0.3s, box-shadow 0.3s;
+		}
+
+		.stat-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 30px rgba(0, 188, 212, 0.2);
+		}
+
+		.stat-card h4 {
+			color: #00bcd4;
+			font-size: 0.9rem;
+			margin-bottom: 10px;
+		}
+
+		.stat-card .value {
+			color: #fff;
+			font-size: 2rem;
+			font-weight: bold;
+			background: linear-gradient(135deg, #00bcd4, #e91e63);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+		}
+
+		.stat-card .unit {
+			color: rgba(255, 255, 255, 0.6);
+			font-size: 0.85rem;
+			margin-top: 5px;
+		}
+
+		@media (max-width: 768px) {
+			h1 {
+				font-size: 1.8rem;
+			}
+
+			#chart {
+				height: 400px;
+			}
+
+			.map-container {
+				padding: 15px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<h1>🗺️ 中国省份交互式地图</h1>
+	<p class="subtitle">鼠标悬停查看各省数据详情</p>
+
+	<div class="map-container">
+		<div id="chart"></div>
+	</div>
+
+	<div class="legend">
+		<div class="legend-item">
+			<div class="legend-color" style="background: linear-gradient(135deg, #00bcd4, #0097a7);"></div>
+			<span>东部地区</span>
+		</div>
+		<div class="legend-item">
+			<div class="legend-color" style="background: linear-gradient(135deg, #4caf50, #2e7d32);"></div>
+			<span>西部地区</span>
+		</div>
+		<div class="legend-item">
+			<div class="legend-color" style="background: linear-gradient(135deg, #ff9800, #f57c00);"></div>
+			<span>中部地区</span>
+		</div>
+		<div class="legend-item">
+			<div class="legend-color" style="background: linear-gradient(135deg, #9c27b0, #7b1fa2);"></div>
+			<span>东北地区</span>
+		</div>
+	</div>
+
+	<div class="stats">
+		<div class="stat-card">
+			<h4>省份总数</h4>
+			<div class="value">23</div>
+			<div class="unit">个省市自治区</div>
+		</div>
+		<div class="stat-card">
+			<h4>覆盖面积</h4>
+			<div class="value">960</div>
+			<div class="unit">万平方公里</div>
+		</div>
+		<div class="stat-card">
+			<h4>人口总数</h4>
+			<div class="value">14.1</div>
+			<div class="unit">亿人</div>
+		</div>
+		<div class="stat-card">
+			<h4>GDP总量</h4>
+			<div class="value">114</div>
+			<div class="unit">万亿元人民币</div>
+		</div>
+	</div>
+
+	<div class="info-panel">
+		<h3>📊 交互说明</h3>
+		<p>
+			将鼠标移动到地图上的各个省份，地图会自动突出显示当前省份，并展示详细的数据指示线。
+			您可以看到该省份的GDP、人口、面积等关键经济指标。
+			点击省份可以固定显示其详细信息，再次点击其他省份可切换查看。
+			地图支持缩放和拖拽，方便查看细节。
+		</p>
+	</div>
+
+	<script>
+		// 初始化图表
+		var chart = echarts.init(document.getElementById('chart'));
+
+		// 各省份的模拟数据
+		var provinceData = {
+			'广东省': { gdp: 124, population: 1.26, area: 18, level: '东部' },
+			'江苏省': { gdp: 116, population: 0.85, area: 10, level: '东部' },
+			'山东省': { gdp: 83, population: 1.02, area: 16, level: '东部' },
+			'浙江省': { gdp: 73, population: 0.65, area: 10, level: '东部' },
+			'河南省': { gdp: 59, population: 1.00, area: 17, level: '中部' },
+			'四川省': { gdp: 54, population: 0.84, area: 49, level: '西部' },
+			'湖北省': { gdp: 50, population: 0.58, area: 19, level: '中部' },
+			'湖南省': { gdp: 46, population: 0.66, area: 21, level: '中部' },
+			'河北省': { gdp: 40, population: 0.75, area: 19, level: '东部' },
+			'福建省': { gdp: 49, population: 0.42, area: 12, level: '东部' },
+			'上海市': { gdp: 43, population: 0.25, area: 0.6, level: '东部' },
+			'北京市': { gdp: 40, population: 0.22, area: 1.6, level: '东部' },
+			'安徽省': { gdp: 43, population: 0.63, area: 14, level: '中部' },
+			'陕西省': { gdp: 30, population: 0.40, area: 21, level: '西部' },
+			'江西省': { gdp: 30, population: 0.45, area: 17, level: '中部' },
+			'重庆市': { gdp: 28, population: 0.32, area: 8.2, level: '西部' },
+			'辽宁省': { gdp: 29, population: 0.43, area: 15, level: '东北' },
+			'云南省': { gdp: 28, population: 0.48, area: 39, level: '西部' },
+			'广西壮族自治区': { gdp: 25, population: 0.50, area: 24, level: '西部' },
+			'山西省': { gdp: 23, population: 0.35, area: 16, level: '中部' },
+			'贵州省': { gdp: 20, population: 0.39, area: 18, level: '西部' },
+			'吉林省': { gdp: 13, population: 0.27, area: 19, level: '东北' },
+			'黑龙江省': { gdp: 15, population: 0.32, area: 47, level: '东北' },
+			'甘肃省': { gdp: 10, population: 0.25, area: 43, level: '西部' },
+			'新疆维吾尔自治区': { gdp: 14, population: 0.26, area: 166, level: '西部' },
+			'内蒙古自治区': { gdp: 21, population: 0.24, area: 118, level: '西部' },
+			'海南省': { gdp: 6.5, population: 0.10, area: 3.5, level: '东部' },
+			'宁夏回族自治区': { gdp: 5, population: 0.07, area: 6.6, level: '西部' },
+			'青海省': { gdp: 3.3, population: 0.06, area: 72, level: '西部' },
+			'西藏自治区': { gdp: 2.1, population: 0.04, area: 123, level: '西部' },
+			'天津市': { gdp: 14, population: 0.14, area: 1.1, level: '东部' },
+			'台湾省': { gdp: 18, population: 0.24, area: 3.6, level: '东部' },
+			'中国香港': { gdp: 2.8, population: 0.075, area: 0.11, level: '东部' },
+			'中国澳门': { gdp: 0.43, population: 0.0067, area: 0.0032, level: '东部' }
+		};
+
+		// 根据区域设置颜色
+		function getColorByLevel(level) {
+			switch (level) {
+				case '东部': return '#00bcd4';
+				case '西部': return '#4caf50';
+				case '中部': return '#ff9800';
+				case '东北': return '#9c27b0';
+				default: return '#00bcd4';
+			}
+		}
+
+		// 转换数据为ECharts格式
+		var dataItems = Object.keys(provinceData).map(function (name) {
+			return {
+				name: name,
+				value: provinceData[name].gdp,
+				...provinceData[name]
+			};
+		});
+
+		fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
+			.then(res => res.json())
+			.then(chinaJson => {
+				echarts.registerMap('china', chinaJson);
+				// 配置选项
+				var option = {
+					backgroundColor: 'transparent',
+					tooltip: {
+						trigger: 'item',
+						backgroundColor: 'rgba(0, 0, 0, 0.85)',
+						borderColor: 'rgba(0, 188, 212, 0.5)',
+						borderWidth: 1,
+						padding: [15, 20],
+						textStyle: {
+							color: '#fff',
+							fontSize: 14
+						},
+						formatter: function (params) {
+							if (params.data) {
+								var data = params.data;
+								return '<div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: ' + getColorByLevel(data.level) + ';">' + data.name + '</div>' +
+									'<div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; margin-top: 10px;">' +
+									'<div style="margin: 5px 0;">📈 GDP: <span style="color: #00bcd4; font-weight: bold;">' + data.gdp + '万亿元</span></div>' +
+									'<div style="margin: 5px 0;">👥 人口: <span style="color: #e91e63; font-weight: bold;">' + data.population + '亿人</span></div>' +
+									'<div style="margin: 5px 0;">📐 面积: <span style="color: #4caf50; font-weight: bold;">' + data.area + '万km²</span></div>' +
+									'<div style="margin: 5px 0;">🏛️ 区域: <span style="color: ' + getColorByLevel(data.level) + '; font-weight: bold;">' + data.level + '地区</span></div>' +
+									'</div>';
+							}
+							return params.name;
+						}
+					},
+					visualMap: {
+						show: true,
+						type: 'continuous',
+						min: 0,
+						max: 130,
+						text: ['高', '低'],
+						textStyle: {
+							color: '#fff'
+						},
+						inRange: {
+							color: [
+								'#24365d', // 低分：深蓝灰（比背景略亮，确保能看见轮廓）
+								'#00bcd4', // 中低：明亮青色
+								'#4caf50', // 中：生机绿
+								'#ffeb3b', // 中高：明亮黄
+								'#ff9800', // 高：活力橙
+								'#f44336'  // 极高：警告红
+							]
+						},
+						calculable: true,
+						left: 'left',
+						bottom: '20',
+						itemWidth: 15,
+						itemHeight: 200
+					},
+					geo: {
+						map: 'china',
+						roam: true,
+						zoom: 1.2,
+						center: [105, 36],
+						label: {
+							show: false
+						},
+						itemStyle: {
+							areaColor: '#1a1a2e',
+							borderColor: '#00bcd4',
+							borderWidth: 1,
+							shadowColor: 'rgba(0, 188, 212, 0.3)',
+							shadowBlur: 10
+						},
+						emphasis: {
+							itemStyle: {
+								areaColor: '#00bcd4',
+								borderColor: '#fff',
+								borderWidth: 2,
+								shadowColor: 'rgba(0, 188, 212, 0.8)',
+								shadowBlur: 20
+							},
+							label: {
+								show: false,
+								color: '#fff',
+								fontSize: 14,
+								fontWeight: 'bold'
+							}
+						},
+						select: {
+							itemStyle: {
+								areaColor: '#e91e63',
+								borderColor: '#fff',
+								borderWidth: 2
+							}
+						}
+					},
+					series: [
+						{
+							name: 'GDP',
+							type: 'map',
+							map: 'china',
+							geoIndex: 0,
+							data: dataItems
+						},
+						{
+							name: '指示线',
+							type: 'lines',
+							coordinateSystem: 'geo',
+							zlevel: 2,
+							symbol: ['none', 'arrow'],
+							symbolSize: 10,
+							effect: {
+								show: true,
+								period: 6,
+								trailLength: 0.3,
+								symbol: 'arrow',
+								symbolSize: 6,
+								color: '#00bcd4'
+							},
+							lineStyle: {
+								color: '#00bcd4',
+								width: 2,
+								opacity: 0.6,
+								curveness: 0.2
+							},
+							data: [
+								[{ name: '北京市' }, { name: '上海市' }],
+								[{ name: '广州市' }, { name: '深圳市' }],
+								[{ name: '成都市' }, { name: '重庆市' }],
+								[{ name: '杭州市' }, { name: '南京市' }],
+								[{ name: '武汉市' }, { name: '长沙市' }],
+								[{ name: '西安市' }, { name: '郑州市' }]
+							]
+						},
+						{
+							name: '省份标记',
+							type: 'scatter',
+							coordinateSystem: 'geo',
+							zlevel: 3,
+							symbol: 'circle',
+							symbolSize: function (val) {
+								return Math.max(val[2] / 10, 8);
+							},
+							itemStyle: {
+								color: function (params) {
+									return getColorByLevel(params.data.level);
+								},
+								shadowColor: 'rgba(0, 188, 212, 0.5)',
+								shadowBlur: 10
+							},
+							emphasis: {
+								scale: 1.5,
+								itemStyle: {
+									shadowColor: 'rgba(233, 30, 99, 0.8)',
+									shadowBlur: 20
+								}
+							},
+							label: {
+								show: true,
+								position: 'left',
+								formatter: '{b}',
+								color: '#fff',
+								fontSize: 10,
+								opacity: 0.8
+							},
+							tooltip: {
+								show: false
+							},
+							data: dataItems.map(function (item) {
+								// 为每个省份生成一个省会城市的近似坐标
+								var coordinates = {
+									'广东省': [113.28, 23.13],
+									'江苏省': [118.78, 32.06],
+									'山东省': [116.99, 36.67],
+									'浙江省': [120.15, 30.28],
+									'河南省': [113.62, 34.75],
+									'四川省': [104.07, 30.67],
+									'湖北省': [114.30, 30.58],
+									'湖南省': [112.98, 28.20],
+									'河北省': [114.52, 38.04],
+									'福建省': [119.30, 26.08],
+									'上海市': [121.47, 31.23],
+									'北京市': [116.40, 39.90],
+									'安徽省': [117.28, 31.86],
+									'陕西省': [108.94, 34.34],
+									'江西省': [115.89, 28.68],
+									'重庆市': [106.55, 29.56],
+									'辽宁省': [123.43, 41.80],
+									'云南省': [102.71, 25.04],
+									'广西壮族自治区': [108.33, 22.84],
+									'山西省': [112.55, 37.87],
+									'贵州省': [106.71, 26.60],
+									'吉林省': [125.32, 43.82],
+									'黑龙江省': [126.53, 45.80],
+									'甘肃省': [103.82, 36.07],
+									'新疆维吾尔自治区': [87.62, 43.79],
+									'内蒙古自治区': [111.67, 40.82],
+									'海南省': [110.35, 20.02],
+									'宁夏回族自治区': [106.26, 38.47],
+									'青海省': [101.78, 36.62],
+									'西藏自治区': [91.11, 29.65],
+									'天津市': [117.20, 39.13],
+									'台湾省': [121.50, 25.05],
+									'香港特别行政区': [114.17, 22.28],
+									'澳门特别行政区': [113.55, 22.20]
+								};
+								return {
+									name: item.name,
+									value: coordinates[item.name] ? coordinates[item.name].concat([item.gdp]) : [0, 0, item.gdp],
+									level: item.level
+								};
+							})
+						}
+					]
+				};
+
+				// 使用刚指定的配置项和数据显示图表。
+				chart.setOption(option);
+
+				// 自动缩放
+				window.addEventListener('resize', function () {
+					chart.resize();
+				});
+
+				// 添加鼠标事件
+				chart.on('mouseover', function (params) {
+					if (params.componentType === 'series') {
+						document.body.style.cursor = 'pointer';
+					}
+				});
+
+				chart.on('mouseout', function (params) {
+					document.body.style.cursor = 'default';
+				});
+			})
+
+
+
+
+	</script>
+</body>
+
+</html>
