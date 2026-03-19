@@ -15,23 +15,24 @@
 
 		body {
 			font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
-			background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+			background: #ffffff;
 			min-height: 100vh;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			padding: 20px;
+			color: #1f2d3d;
 		}
 
 		h1 {
-			color: #fff;
+			color: #1f2d3d;
 			font-size: 2.5rem;
 			margin-bottom: 20px;
-			text-shadow: 0 0 20px rgba(0, 188, 212, 0.5);
+			text-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
 		}
 
 		.subtitle {
-			color: rgba(255, 255, 255, 0.7);
+			color: #5f6f82;
 			font-size: 1.1rem;
 			margin-bottom: 30px;
 		}
@@ -39,12 +40,11 @@
 		.map-container {
 			width: 100%;
 			max-width: 1200px;
-			background: rgba(255, 255, 255, 0.05);
+			background: #ffffff;
 			border-radius: 20px;
 			padding: 30px;
-			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-			backdrop-filter: blur(10px);
-			border: 1px solid rgba(255, 255, 255, 0.1);
+			box-shadow: 0 10px 30px rgba(31, 45, 61, 0.08);
+			border: 1px solid #dbe5ef;
 		}
 
 		#chart {
@@ -55,19 +55,19 @@
 		.info-panel {
 			margin-top: 30px;
 			padding: 25px;
-			background: linear-gradient(135deg, rgba(0, 188, 212, 0.1), rgba(233, 30, 99, 0.1));
+			background: #f7fafc;
 			border-radius: 15px;
-			border: 1px solid rgba(255, 255, 255, 0.1);
+			border: 1px solid #dbe5ef;
 		}
 
 		.info-panel h3 {
-			color: #00bcd4;
+			color: #1f2d3d;
 			font-size: 1.3rem;
 			margin-bottom: 15px;
 		}
 
 		.info-panel p {
-			color: rgba(255, 255, 255, 0.8);
+			color: #5f6f82;
 			line-height: 1.8;
 			font-size: 0.95rem;
 		}
@@ -84,7 +84,7 @@
 			display: flex;
 			align-items: center;
 			gap: 8px;
-			color: #fff;
+			color: #1f2d3d;
 			font-size: 0.9rem;
 		}
 
@@ -104,37 +104,34 @@
 		}
 
 		.stat-card {
-			background: rgba(255, 255, 255, 0.05);
+			background: #ffffff;
 			border-radius: 15px;
 			padding: 20px;
 			text-align: center;
-			border: 1px solid rgba(255, 255, 255, 0.1);
+			border: 1px solid #dbe5ef;
 			transition: transform 0.3s, box-shadow 0.3s;
 		}
 
 		.stat-card:hover {
 			transform: translateY(-5px);
-			box-shadow: 0 10px 30px rgba(0, 188, 212, 0.2);
+			box-shadow: 0 12px 28px rgba(30, 64, 104, 0.14);
+			background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%);
 		}
 
 		.stat-card h4 {
-			color: #00bcd4;
+			color: #4f83b6;
 			font-size: 0.9rem;
 			margin-bottom: 10px;
 		}
 
 		.stat-card .value {
-			color: #fff;
+			color: #1f3a5f;
 			font-size: 2rem;
 			font-weight: bold;
-			background: linear-gradient(135deg, #00bcd4, #e91e63);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-clip: text;
 		}
 
 		.stat-card .unit {
-			color: rgba(255, 255, 255, 0.6);
+			color: #70849a;
 			font-size: 0.85rem;
 			margin-top: 5px;
 		}
@@ -165,19 +162,19 @@
 
 	<div class="legend">
 		<div class="legend-item">
-			<div class="legend-color" style="background: linear-gradient(135deg, #00bcd4, #0097a7);"></div>
+			<div class="legend-color" style="background: linear-gradient(135deg, #4f83b6, #2f5f93);"></div>
 			<span>东部地区</span>
 		</div>
 		<div class="legend-item">
-			<div class="legend-color" style="background: linear-gradient(135deg, #4caf50, #2e7d32);"></div>
+			<div class="legend-color" style="background: linear-gradient(135deg, #6ea689, #4f7d64);"></div>
 			<span>西部地区</span>
 		</div>
 		<div class="legend-item">
-			<div class="legend-color" style="background: linear-gradient(135deg, #ff9800, #f57c00);"></div>
+			<div class="legend-color" style="background: linear-gradient(135deg, #d49a56, #b97a35);"></div>
 			<span>中部地区</span>
 		</div>
 		<div class="legend-item">
-			<div class="legend-color" style="background: linear-gradient(135deg, #9c27b0, #7b1fa2);"></div>
+			<div class="legend-color" style="background: linear-gradient(135deg, #8b79b9, #6f5ea3);"></div>
 			<span>东北地区</span>
 		</div>
 	</div>
@@ -260,11 +257,11 @@
 		// 根据区域设置颜色
 		function getColorByLevel(level) {
 			switch (level) {
-				case '东部': return '#00bcd4';
-				case '西部': return '#4caf50';
-				case '中部': return '#ff9800';
-				case '东北': return '#9c27b0';
-				default: return '#00bcd4';
+				case '东部': return '#4f83b6';
+				case '西部': return '#6ea689';
+				case '中部': return '#d49a56';
+				case '东北': return '#8b79b9';
+				default: return '#4f83b6';
 			}
 		}
 
@@ -286,12 +283,12 @@
 					backgroundColor: 'transparent',
 					tooltip: {
 						trigger: 'item',
-						backgroundColor: 'rgba(0, 0, 0, 0.85)',
-						borderColor: 'rgba(0, 188, 212, 0.5)',
+						backgroundColor: 'rgba(255, 255, 255, 0.96)',
+						borderColor: '#c7d6e6',
 						borderWidth: 1,
 						padding: [15, 20],
 						textStyle: {
-							color: '#fff',
+							color: '#1f2d3d',
 							fontSize: 14
 						},
 						formatter: function (params) {
@@ -299,9 +296,9 @@
 								var data = params.data;
 								return '<div style="font-weight: bold; font-size: 16px; margin-bottom: 10px; color: ' + getColorByLevel(data.level) + ';">' + data.name + '</div>' +
 									'<div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; margin-top: 10px;">' +
-									'<div style="margin: 5px 0;">📈 GDP: <span style="color: #00bcd4; font-weight: bold;">' + data.gdp + '万亿元</span></div>' +
-									'<div style="margin: 5px 0;">👥 人口: <span style="color: #e91e63; font-weight: bold;">' + data.population + '亿人</span></div>' +
-									'<div style="margin: 5px 0;">📐 面积: <span style="color: #4caf50; font-weight: bold;">' + data.area + '万km²</span></div>' +
+									'<div style="margin: 5px 0;">📈 GDP: <span style="color: #2f5f93; font-weight: bold;">' + data.gdp + '万亿元</span></div>' +
+									'<div style="margin: 5px 0;">👥 人口: <span style="color: #7f6aa8; font-weight: bold;">' + data.population + '亿人</span></div>' +
+									'<div style="margin: 5px 0;">📐 面积: <span style="color: #4f7d64; font-weight: bold;">' + data.area + '万km²</span></div>' +
 									'<div style="margin: 5px 0;">🏛️ 区域: <span style="color: ' + getColorByLevel(data.level) + '; font-weight: bold;">' + data.level + '地区</span></div>' +
 									'</div>';
 							}
@@ -315,16 +312,16 @@
 						max: 130,
 						text: ['高', '低'],
 						textStyle: {
-							color: '#fff'
+							color: '#1f2d3d'
 						},
 						inRange: {
 							color: [
-								'#24365d', // 低分：深蓝灰（比背景略亮，确保能看见轮廓）
-								'#00bcd4', // 中低：明亮青色
-								'#4caf50', // 中：生机绿
-								'#ffeb3b', // 中高：明亮黄
-								'#ff9800', // 高：活力橙
-								'#f44336'  // 极高：警告红
+								'#edf5ff',
+								'#d3e6fa',
+								'#b6d7f4',
+								'#8fc0e8',
+								'#679fce',
+								'#2f5f93'
 							]
 						},
 						calculable: true,
@@ -336,24 +333,31 @@
 					geo: {
 						map: 'china',
 						roam: true,
+						zoomOnMouseWheel: false,
+						moveOnMouseMove: true,
+						moveOnMouseWheel: false,
+						scaleLimit: {
+							min: 0.8,
+							max: 6
+						},
 						zoom: 1.2,
 						center: [105, 36],
 						label: {
 							show: false
 						},
 						itemStyle: {
-							areaColor: '#1a1a2e',
-							borderColor: '#00bcd4',
+							areaColor: '#f5f9ff',
+							borderColor: '#8ba7c4',
 							borderWidth: 1,
-							shadowColor: 'rgba(0, 188, 212, 0.3)',
+							shadowColor: 'rgba(47, 95, 147, 0.18)',
 							shadowBlur: 10
 						},
 						emphasis: {
 							itemStyle: {
-								areaColor: '#00bcd4',
-								borderColor: '#fff',
+								areaColor: '#5f8ebd',
+								borderColor: '#1f2d3d',
 								borderWidth: 2,
-								shadowColor: 'rgba(0, 188, 212, 0.8)',
+								shadowColor: 'rgba(47, 95, 147, 0.35)',
 								shadowBlur: 20
 							},
 							label: {
@@ -365,7 +369,7 @@
 						},
 						select: {
 							itemStyle: {
-								areaColor: '#e91e63',
+								areaColor: '#7f6aa8',
 								borderColor: '#fff',
 								borderWidth: 2
 							}
@@ -392,10 +396,10 @@
 								trailLength: 0.3,
 								symbol: 'arrow',
 								symbolSize: 6,
-								color: '#00bcd4'
+								color: '#b97a35'
 							},
 							lineStyle: {
-								color: '#00bcd4',
+								color: '#b97a35',
 								width: 2,
 								opacity: 0.6,
 								curveness: 0.2
@@ -422,13 +426,13 @@
 								color: function (params) {
 									return getColorByLevel(params.data.level);
 								},
-								shadowColor: 'rgba(0, 188, 212, 0.5)',
+								shadowColor: 'rgba(47, 95, 147, 0.3)',
 								shadowBlur: 10
 							},
 							emphasis: {
 								scale: 1.5,
 								itemStyle: {
-									shadowColor: 'rgba(233, 30, 99, 0.8)',
+									shadowColor: 'rgba(127, 106, 168, 0.55)',
 									shadowBlur: 20
 								}
 							},
@@ -436,7 +440,7 @@
 								show: true,
 								position: 'left',
 								formatter: '{b}',
-								color: '#fff',
+								color: '#1f2d3d',
 								fontSize: 10,
 								opacity: 0.8
 							},
